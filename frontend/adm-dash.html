@@ -1,0 +1,152 @@
+<html>
+<head>
+    <title>EduQuest Admin Dashboard</title>
+    <link rel="icon" href="ques.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1c1c2b, #3a3a6e);
+            color: #f4f4f9;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        .dashboard-container {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00d4ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .file-upload {
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            padding: 10px;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #00d4ff, #007bff);
+        }
+        #file-name {
+            color: #00d4ff;
+            margin: 10px 0;
+        }
+        #status {
+            color: #00d4ff;
+            margin-top: 10px;
+            display: none;
+        }
+        #uploaded-list {
+            text-align: left;
+            margin-top: 1rem;
+            background: #243b55;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>📚 Admin Dashboard</h1>
+
+        <label class="file-upload" for="file-upload">📂 Select Textbook</label>
+        <input type="file" id="file-upload" accept=".pdf">
+        <p id="file-name"></p>
+        <button onclick="uploadFile()">Upload Textbook</button>
+        <p id="status"></p>
+
+        <div id="uploaded-list">
+            <h3>Uploaded Textbooks:</h3>
+            <ul id="file-list"></ul>
+        </div>
+        <button onclick="logout()">Logout</button>
+
+    </div>
+
+    <script>
+        if (sessionStorage.getItem("isAdminLoggedIn") !== "true") {
+            window.location.href = "admin.html";  // Redirect to login page if no valid session
+        }
+        
+        const fileUpload = document.getElementById("file-upload");
+        const fileNameDisplay = document.getElementById("file-name");
+        const statusDisplay = document.getElementById("status");
+        const fileList = document.getElementById("file-list");
+
+        const uploadedFiles = [];
+
+        fileUpload.addEventListener("change", () => {
+            fileNameDisplay.textContent = fileUpload.files.length > 0 ? `Selected: ${fileUpload.files[0].name}` : "";
+        });
+
+        function uploadFile() {
+            const file = fileUpload.files[0];
+            if (!file) {
+                alert("Please select a file to upload.");
+                return;
+            }
+
+            // Simulate upload & store in array (real project would call backend API)
+            uploadedFiles.push(file.name);
+
+            statusDisplay.textContent = `✅ ${file.name} uploaded successfully!`;
+            statusDisplay.style.display = "block";
+
+            updateFileList();
+
+            // Clear input
+            fileUpload.value = "";
+            fileNameDisplay.textContent = "";
+        }
+
+        function updateFileList() {
+            fileList.innerHTML = "";
+        
+            if (uploadedFiles.length === 0) {
+                fileList.innerHTML = "<li>No textbooks uploaded yet.</li>";
+            } else {
+                uploadedFiles.forEach(file => {
+                    const li = document.createElement("li");
+                    li.textContent = file;
+                    fileList.appendChild(li);
+                });
+            }
+        }
+        
+        function logout() {
+            sessionStorage.removeItem("isAdminLoggedIn");  // Clear session
+            window.location.href = "admin.html";  // Redirect to login page
+        }
+        
+    </script>
+</body>
+</html>

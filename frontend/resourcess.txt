@@ -1,0 +1,4 @@
+SERVICE WORKER
+https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers?utm_source=chatgpt.com#setting_up_to_play_with_service_workers
+
+http://127.0.0.1:8080

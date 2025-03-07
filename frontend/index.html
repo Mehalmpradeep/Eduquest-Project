@@ -1,0 +1,332 @@
+<html>
+<head>
+    <title>EduQuest</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="ques.png" type="image/png">
+    
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #f4f4f9;
+            display: flex;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        header h1 {
+            font-size: 5rem;
+            color: #ffffff;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar {
+            background-color: #1e293b;
+            width: 250px;
+            padding: 1rem;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            color: #f4f4f9;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 1rem;
+            background-color: #243b55;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #00d4ff;
+            color: #000;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        main {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 1rem 0;
+            font-size: 16px;
+            border: 2px solid #555;
+            border-radius: 10px;
+            background: #243b55;
+            color: #f4f4f9;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: #00d4ff;
+            background: #1c2b3a;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 15px 20px;
+            margin: 1rem 0;
+            color: #ffffff;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .custom-file-upload:hover {
+            background: linear-gradient(90deg, #00d4ff, #007bff);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            color: #00d4ff;
+        }
+
+        button {
+            display: inline-block;
+            padding: 15px 20px;
+            margin-top: 1rem;
+            font-size: 18px;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #00d4ff, #007bff);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+        button:disabled {
+            background: gray;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #result {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #1c2b3a;
+            border: 1px solid #00d4ff;
+            border-radius: 10px;
+            color: #f4f4f9;
+        }
+        .admin-btn {
+            position: fixed; /* Use fixed to stick it on top even if you scroll */
+            top: 15px;
+            right: 15px;
+            background: #00d4ff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.3s ease;
+            z-index: 1000; /* Make sure it's above everything */
+        }
+        
+        .admin-btn:hover {
+            background: #007bff;
+            color: white;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <a href="admin.html" class="admin-btn">Admin Login</a>
+    <div class="sidebar">
+        <h2>Recent Questions</h2>
+        <ul id="recent-questions"></ul>
+    </div>
+    <div class="main-content">
+        <header><h1>EduQuest</h1></header>
+        <a href="admin.html" class="admin-btn">Admin Login</a>
+
+        <main>
+            <label for="question">Type your question:</label>
+            <textarea id="question" placeholder="Enter your question here..."></textarea>
+            <label for="file-upload" class="custom-file-upload">📂 Upload a PDF or Image</label>
+            <input type="file" id="file-upload" accept=".pdf, .jpg, .jpeg, .png">
+            <p id="file-name" class="file-name"></p>
+            <button id="submit-btn" disabled>Get Answer</button>
+            <div id="result" style="display: none;"><h2>Answer:</h2><p id="answer"></p></div>
+        </main>
+    </div>
+
+    <script>
+     
+        const fileUpload = document.getElementById("file-upload");
+const fileNameDisplay = document.getElementById("file-name");
+const submitBtn = document.getElementById("submit-btn");
+const questionInput = document.getElementById("question");
+const recentQuestionsList = document.getElementById("recent-questions");
+
+// Load recent questions from localStorage
+let storedData = localStorage.getItem("recentQuestions");
+let recentQuestions = storedData ? JSON.parse(storedData) : [];
+if (!Array.isArray(recentQuestions)) recentQuestions = [];
+
+let lastSavedDate = localStorage.getItem("lastSavedDate") || new Date().toDateString();
+
+// Reset questions daily
+if (lastSavedDate !== new Date().toDateString()) {
+    recentQuestions = [];
+    localStorage.setItem("lastSavedDate", new Date().toDateString());
+}
+
+// Enable/Disable Button Function
+function toggleButtonState() {
+    const questionNotEmpty = questionInput.value.trim().length > 0;
+    const fileSelected = fileUpload.files.length > 0;
+    submitBtn.disabled = !(questionNotEmpty || fileSelected);
+}
+
+// Event Listeners for Enabling Button
+questionInput.addEventListener("input", toggleButtonState);
+fileUpload.addEventListener("change", function () {
+    fileNameDisplay.textContent = this.files.length > 0 ? `Selected: ${this.files[0].name}` : "";
+    toggleButtonState();
+});
+
+// Submit Button Click Event
+submitBtn.addEventListener("click", function () {
+    const question = questionInput.value.trim();
+    const file = fileUpload.files[0] ? fileUpload.files[0].name : null;
+
+    // Disable button immediately after clicking
+    submitBtn.disabled = true;
+
+    // Store recent question/file
+    if (question) recentQuestions.push({ text: question, date: new Date().toISOString() });
+    if (file) recentQuestions.push({ text: file, date: new Date().toISOString() });
+
+    // Keep only the last 300 questions
+    if (recentQuestions.length > 300) recentQuestions = recentQuestions.slice(-300);
+    localStorage.setItem("recentQuestions", JSON.stringify(recentQuestions));
+
+    // Update UI
+    updateRecentQuestionsList();
+    document.getElementById("answer").innerText = "Here is a sample answer.";
+    document.getElementById("result").style.display = "block";
+
+    // Clear inputs and update button state
+    setTimeout(() => {
+        questionInput.value = "";
+        fileUpload.value = "";
+        fileNameDisplay.textContent = "";
+        toggleButtonState();
+    }, 500);
+});
+
+// Update Sidebar with Recent Questions
+function updateRecentQuestionsList() {
+    let storedQuestions = JSON.parse(localStorage.getItem("recentQuestions")) || [];
+
+    let today = new Date().toDateString();
+    let threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+    let todayList = [];
+    let last3DaysList = [];
+    let oldList = [];
+
+    // Process questions in reverse order to maintain stack order (LIFO)
+    for (let i = storedQuestions.length - 1; i >= 0; i--) {
+        let q = storedQuestions[i];
+        let questionDate = new Date(q.date).toDateString();
+
+        if (questionDate === today) {
+            todayList.push(q.text);
+        } else if (new Date(q.date) >= threeDaysAgo) {
+            last3DaysList.push(q.text);
+        } else {
+            oldList.push(q.text);
+        }
+    }
+
+    // Limit storage per section (latest first)
+    todayList = todayList.slice(0, 50);  
+    last3DaysList = last3DaysList.slice(0, 150);
+
+    recentQuestionsList.innerHTML = `
+        ${todayList.length ? `<h3>Today</h3><ul>${todayList.map(q => `<li>${q}</li>`).join('')}</ul>` : ""}
+        ${last3DaysList.length ? `<h3>Previous 3 Days</h3><ul>${last3DaysList.map(q => `<li>${q}</li>`).join('')}</ul>` : ""}
+        ${oldList.length ? `<h3>Old</h3><ul>${oldList.map(q => `<li>${q}</li>`).join('')}</ul>` : ""}
+    `;
+
+    // Update localStorage with the latest stack order
+    localStorage.setItem("recentQuestions", JSON.stringify([...todayList, ...last3DaysList, ...oldList]));
+}
+
+
+// Load recent questions on page load
+updateRecentQuestionsList();
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/serviceworker.js')
+            .then(reg => console.log('Service Worker registered:', reg.scope))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    });
+}
+    </script>
+</body>
+</html>
